@@ -6,7 +6,7 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 
 
-client = Bot(description="Basic Bot by Habchy#1665", command_prefix="k!", pm_help = True)
+client = Bot(description="https://github.com/marios8543/", command_prefix="k!", pm_help = True)
 async def on_ready():
 	print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to '+str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
 
