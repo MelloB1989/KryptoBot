@@ -29,6 +29,14 @@ async def help():
  embed.add_field(name='k!etc', value='Ethereum Classic price', inline=False)
  embed.set_footer(text="KryptoBot")
  await client.say(embed=embed)
+ embed2=discord.Embed(title="Mining stats:", color=0xdd0000)
+ embed2.set_author(name='KryptoBot', icon_url='https://pm1.narvii.com/6328/5a29ffab58fa1271161d4cdc82d566ec8659d47e_hq.jpg')
+ embed2.add_field(name='k!ethermine *address*', value='Ethermine stats', inline=False)
+ embed2.add_field(name='k!ethpool *address*', value='Ethpool stats', inline=False)
+ embed2.add_field(name='k!ethermineetc *address*', value='Ethermine classic stats', inline=False)
+ embed2.add_field(name='k!flypool *address*', value='Flypool stats', inline=False)
+ embed2.set_footer(text="KryptoBot")
+ await client.say(embed=embed2)
 
 #Bitcoin price
 @client.command()
@@ -227,6 +235,8 @@ async def ethermineetc(args):
  await client.say(embed=embed)
 
  #Flypool Stats
+
+ #Flypool stats
 @client.command()
 async def flypool(args):
  site = 'https://api-zcash.flypool.org/{}/currentStats'.format(args)
