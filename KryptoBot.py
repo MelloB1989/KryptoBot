@@ -6,9 +6,7 @@ import asyncio
 from discord.ext.commands import Bot
 from discord.ext import commands
 
-
-help_dict = {'k!commands':'Lists all the available commands'}
-
+ 
 client = Bot(description="github.com/marios8543/KryptoBot", command_prefix="k!", pm_help = True, command_has_no_subcommand='Missing arguments!', command_not_found='Command not found. Do k!commands for a list of available commands')
 async def on_ready():
     print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to '+str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
