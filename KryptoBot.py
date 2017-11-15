@@ -20,10 +20,11 @@ async def on_ready():
  await client.change_presence(game=discord.Game(name='k!help'))
 
 #Help
-@client.command()
-async def help():
+@client.command(pass_context=True)
+async def help(ctx, member: discord.Member = None):
+ member = ctx.message.author
  embed=discord.Embed(title="Coin prices:", color=0xdd0000)
- embed.set_author(name='KryptoBot', icon_url='https://pm1.narvii.com/6328/5a29ffab58fa1271161d4cdc82d566ec8659d47e_hq.jpg')
+ embed.set_author(name='KryptoBot', icon_url='https://cdn.discordapp.com/attachments/374575174432849922/380423351958765589/krypto.jpg')
  embed.add_field(name='k!btc', value='Bitcoin price', inline=False)
  embed.add_field(name='k!eth', value='Ethereum price', inline=False)
  embed.add_field(name='k!zec', value='Zcash price', inline=False)
@@ -33,21 +34,25 @@ async def help():
  embed.add_field(name='k!xrp', value='Ripple price', inline=False)
  embed.add_field(name='k!etc', value='Ethereum Classic price', inline=False)
  embed.set_footer(text="KryptoBot")
- await client.say(embed=embed)
+ #await client.say(embed=embed)
  embed2=discord.Embed(title="Mining stats:", color=0xdd0000)
- embed2.set_author(name='KryptoBot', icon_url='https://pm1.narvii.com/6328/5a29ffab58fa1271161d4cdc82d566ec8659d47e_hq.jpg')
+ embed2.set_author(name='', icon_url='https://cdn.discordapp.com/attachments/374575174432849922/380423351958765589/krypto.jpg')
  embed2.add_field(name='k!ethermine *address*', value='Ethermine stats', inline=False)
  embed2.add_field(name='k!ethpool *address*', value='Ethpool stats', inline=False)
  embed2.add_field(name='k!ethermineetc *address*', value='Ethermine classic stats', inline=False)
  embed2.add_field(name='k!flypool *address*', value='Flypool stats', inline=False)
  embed2.set_footer(text="KryptoBot")
- await client.say(embed=embed2)
+ #await client.say(embed=embed2)
  embed3=discord.Embed(Title="Wallet lookup:", color=0xdd0000)
- embed3.set_author(name='KryptoBot', icon_url='https://pm1.narvii.com/6328/5a29ffab58fa1271161d4cdc82d566ec8659d47e_hq.jpg')
+ embed3.set_author(name='', icon_url='https://cdn.discordapp.com/attachments/374575174432849922/380423351958765589/krypto.jpg')
  embed3.add_field(name='k!etherscan *address*', value='Ethereum wallet lookup', inline=False)
  embed3.add_field(name='k!blockchain *address*', value='Bitcoin wallet lookup', inline=False)
  embed3.set_footer(text='KryptoBot')
- await client.say(embed=embed3)
+ #await client.say(embed=embed3)
+ await client.send_message(member, embed=embed)
+ await client.send_message(member, embed=embed2)
+ await client.send_message(member, embed=embed3)
+ await client.say('`Help has been slid into your DMs UwU`')
 
 #Bitcoin price
 @client.command()
@@ -191,9 +196,9 @@ async def bch():
 
 #Ethermine stats
 @client.command()
-async def ethermine(args):
- site_stats = 'https://api.ethermine.org/miner/{}/currentStats'.format(args)
- site_settings = 'https://api.ethermine.org/miner/{}/settings'.format(args)
+async def ethermine(arg):
+ site_stats = 'https://api.ethermine.org/miner/{}/currentStats'.format(arg)
+ site_settings = 'https://api.ethermine.org/miner/{}/settings'.format(arg)
  set_json = requests.get(site_settings)
  mine_json = requests.get(site_stats)
  result_stats = json.loads(mine_json.text)
@@ -208,7 +213,7 @@ async def ethermine(args):
  active_workers = result_stats['data']['activeWorkers']
  unpaid_balance = result_stats['data']['unpaid']
  prcnt = percent(payout, unpaid_balance)
- embed=discord.Embed(title=args, color=0x355271)
+ embed=discord.Embed(title=arg, color=0x355271)
  embed.set_author(name='Ethermine Stats', icon_url='https://ethermine.org/images/mining.png')
  embed.add_field(name='Reported Hashrate', value=str(report_hash / 1000000 )[0:-5] + ' MH/s', inline=False)
  embed.add_field(name='Actual Hashrate', value= str(current_hash / 1000000 )[0:-13] + ' MH/s', inline=False)
@@ -225,12 +230,8 @@ async def ethermine(args):
 @client.command()
 async def ethpool(args):
  site_stats = 'https://api.ethpool.org/miner/{}/currentStats'.format(args)
- site_settings = 'https://api.ethpool.org/miner/{}/settings'.format(args)
- set_json = requests.get(site_settings)
  mine_json = requests.get(site_stats)
  result_stats = json.loads(mine_json.text)
- set_stats = json.loads(set_json.text)
- payout = set_stats['data']['minPayout']
  report_hash = result_stats['data']['reportedHashrate']
  current_hash = result_stats['data']['currentHashrate']
  average_hash = result_stats['data']['averageHashrate']
@@ -238,8 +239,6 @@ async def ethpool(args):
  invalid_shares = result_stats['data']['invalidShares']
  stale_shares = result_stats['data']['staleShares']
  active_workers = result_stats['data']['activeWorkers']
- unpaid_balance = result_stats['data']['unpaid']
- prcnt = percent(payout, unpaid_balance)
  embed=discord.Embed(title=args, color=0x355271)
  embed.set_author(name='Ethpool Stats', icon_url='https://ethermine.org/images/mining.png')
  embed.add_field(name='Reported Hashrate', value=str(report_hash / 1000000 )[0:-5] + 'MH/s', inline=False)
@@ -249,7 +248,6 @@ async def ethpool(args):
  embed.add_field(name='Invalid Shares', value=invalid_shares, inline=False)
  embed.add_field(name='Stale Shares', value=stale_shares, inline=False)
  embed.add_field(name='Active Workers', value=active_workers, inline=False)
- embed.add_field(name='Unpaid Balance', value=str(unpaid_balance / 1000000000000000000)[0:-12] +'ETH ('+prcnt+')', inline=False)
  embed.set_footer(text="KryptoBot")
  await client.say(embed=embed)
 
@@ -281,7 +279,7 @@ async def ethermineetc(args):
  embed.add_field(name='Invalid Shares', value=invalid_shares, inline=False)
  embed.add_field(name='Stale Shares', value=stale_shares, inline=False)
  embed.add_field(name='Active Workers', value=active_workers, inline=False)
- embed.add_field(name='Unpaid Balance', value=str(unpaid_balance / 1000000000000000000)[0:-12] +'ETH ('+prcnt+')', inline=False)
+ embed.add_field(name='Unpaid Balance', value=str(unpaid_balance / 1000000000000000000)[0:-12] +'ETC ('+prcnt+')', inline=False)
  embed.set_footer(text="KryptoBot")
  await client.say(embed=embed)
 
@@ -295,7 +293,6 @@ async def flypool(args):
  result_stats = json.loads(mine_json.text)
  set_stats = json.loads(set_json.text)
  payout = set_stats['data']['minPayout']
- report_hash = result_stats['data']['reportedHashrate']
  current_hash = result_stats['data']['currentHashrate']
  average_hash = result_stats['data']['averageHashrate']
  valid_shares = result_stats['data']['validShares']
@@ -303,17 +300,18 @@ async def flypool(args):
  stale_shares = result_stats['data']['staleShares']
  active_workers = result_stats['data']['activeWorkers']
  unpaid_balance = result_stats['data']['unpaid']
+ unconfirmed_balance = result_stats['data']['unconfirmed']
  prcnt = percent(payout, unpaid_balance)
  embed=discord.Embed(title=args, color=0x355271)
  embed.set_author(name='Flypool Zcash Stats', icon_url='https://ethermine.org/images/mining.png')
- embed.add_field(name='Reported Hashrate', value=str(report_hash / 1000000 )[0:-5] + 'MH/s', inline=False)
- embed.add_field(name='Actual Hashrate', value= str(current_hash / 1000000 )[0:-13] + 'MH/s', inline=False)
- embed.add_field(name='Average Hashrate', value=str(average_hash / 1000000 )[0:-13] + 'MH/s', inline=False)
+ embed.add_field(name='Actual Hashrate', value= str(current_hash / 100000000 ) + 'KH/s', inline=False)
+ embed.add_field(name='Average Hashrate', value=str(average_hash / 100000000 ) + 'KH/s', inline=False)
  embed.add_field(name='Valid Shares', value=valid_shares, inline=False)
  embed.add_field(name='Invalid Shares', value=invalid_shares, inline=False)
  embed.add_field(name='Stale Shares', value=stale_shares, inline=False)
  embed.add_field(name='Active Workers', value=active_workers, inline=False)
- embed.add_field(name='Unpaid Balance', value=str(unpaid_balance / 1000000000000000000)[0:-12] +'ETH ('+prcnt+')', inline=False)
+ embed.add_field(name='Unpaid Balance', value=str(unpaid_balance / 100000000)[0:-3] +' ZEC', inline=False)
+ embed.add_field(name='Unconfirmed Balance', value=str(unconfirmed_balance / 100000000)[0:-3] +' ZEC', inline=False)
  embed.set_footer(text="KryptoBot")
  await client.say(embed=embed)
 
