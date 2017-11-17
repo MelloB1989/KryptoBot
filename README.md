@@ -1,7 +1,7 @@
 # KryptoBot
 A discord bot all about cryptocurrencies
 
-[Invite link](https://discordapp.com/oauth2/authorize?client_id=374648052360937472&scope=bot&permissions=1)
+###### [Invite link](https://discordapp.com/oauth2/authorize?client_id=374648052360937472&scope=bot&permissions=379904)
 
 ## Command List:
 
