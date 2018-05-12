@@ -1,3 +1,7 @@
+# DEAD
+This project is dead. I will not update it anymore. I made it very early into my python learning period (and bot making period) where I had no idea about blocking and asyncio so I used requests for all the grabbing. It's broken af and I have no intention of fixing it. I have already implemented its functionality (minus the miner checking cause I doubt anyone uses that anyway) into [My other bot](https://github.com/marios8543/PBot) so go check that out. Cheers...
+
+
 # KryptoBot
 A discord bot all about cryptocurrencies
 
