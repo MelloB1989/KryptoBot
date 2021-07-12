@@ -425,4 +425,4 @@ async def convertDCR(args):
 
 
 
-client.run('YOUR_BOT_TOKEN_HERE')
+client.run('ODY0MDQxODIwMjY1OTA2MjA2.YOvrpw.I7X5iZhJyfvss9Q30TjObN7ZNMo')
